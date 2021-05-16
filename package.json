@@ -1,5 +1,5 @@
 {
-  "name": "with-typescript",
+  "name": "jays-collection",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
@@ -8,14 +8,22 @@
     "type-check": "tsc"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "@apollo/client": "^3.3.16",
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
+    "apexcharts": "^3.26.1",
+    "graphql": "^15.5.0",
+    "next": "^10.1.3",
+    "next-pwa": "^5.2.21",
+    "react": "^17.0.2",
+    "react-apexcharts": "^1.3.9",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@types/node": "^12.12.21",
-    "@types/react": "^16.9.16",
-    "@types/react-dom": "^16.9.4",
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.5",
     "typescript": "3.9.7"
   },
   "license": "ISC"
