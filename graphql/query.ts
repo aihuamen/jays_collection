@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const SEIYUU_SCORE = gql`
-  query Query($staffSearch: String, $top: Int) {
+  query Query($staffSearch: String, $top: Int, $rankBy: [MediaSort]) {
     Staff(search: $staffSearch) {
       id
       name {
@@ -12,7 +12,7 @@ export const SEIYUU_SCORE = gql`
         large
       }
       age
-      characterMedia(sort: [SCORE_DESC], perPage: $top) {
+      characterMedia(sort: $rankBy, perPage: $top) {
         edges {
           id
           characterRole

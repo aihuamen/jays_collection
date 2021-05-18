@@ -1,5 +1,10 @@
 import { SEIYUU_SCORE } from "../graphql/query";
-import { SeiyuuInfo } from "../interfaces/seiyuu";
+import {
+  POPULARITY_DESC,
+  RankSortType,
+  SCORE_DESC,
+  SeiyuuInfo,
+} from "../interfaces/seiyuu";
 import {
   AppBar,
   Box,
@@ -8,11 +13,13 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
+  Grow,
   IconButton,
   InputBase,
   Radio,
   RadioGroup,
   Toolbar,
+  useMediaQuery,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import {
@@ -21,13 +28,10 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core/styles";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { initApollo } from "../graphql/client";
 import { GetServerSideProps } from "next";
-import React, { useEffect, useState } from "react";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React, { useEffect, useRef, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import dynamic from "next/dynamic";
@@ -36,8 +40,9 @@ import AnimeGridList from "../components/AnimeGridList";
 import Head from "next/head";
 import Link from "next/link";
 import { Skeleton } from "@material-ui/lab";
+import { SeiyuuProfile } from "../components/SeiyuuProfile";
 
-const Chart = dynamic(() => import("../components/Chart"), { ssr: false });
+const Chart = dynamic(() => import("../components/AnimeChart"), { ssr: false });
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -127,6 +132,14 @@ const Seiyuu = ({ window, data, error }: Props) => {
   const [search, setSearch] = useState("");
   const [load, setLoad] = useState(true);
 
+  const searchInput = useRef<HTMLInputElement>(null);
+
+  const params = new URLSearchParams(router.asPath.split("?")[1]);
+
+  const rankType = (router.query.r as RankSortType) ?? SCORE_DESC;
+
+  const matchMD = useMediaQuery<Theme>((theme) => theme.breakpoints.up("md"));
+
   useEffect(() => {
     setLoad(false);
   }, [data]);
@@ -135,6 +148,11 @@ const Seiyuu = ({ window, data, error }: Props) => {
     <>
       <Head>
         <title>Seiyuu Anime Ranking (SSR)</title>
+        <meta
+          name="description"
+          content="Finding the best anime your Seiyuu has voiced (Server Side Rendering)"
+        />
+        <meta name="application-name" content="Seiyuu Anime Ranking (SSR)" />
         <meta charSet="utf-8" />
       </Head>
       <Box className={classes.background}>
@@ -160,10 +178,13 @@ const Seiyuu = ({ window, data, error }: Props) => {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
+                    if (search === "") return;
+                    searchInput.current?.blur();
                     setLoad(true);
+                    params.set("s", search);
                     router.push(
-                      `?s=${search}&t=${router.query.t ?? "10"}`,
-                      `?s=${search}&t=${router.query.t ?? "10"}`,
+                      "?" + params.toString(),
+                      "?" + params.toString(),
                       {
                         scroll: false,
                       }
@@ -190,91 +211,92 @@ const Seiyuu = ({ window, data, error }: Props) => {
         <Toolbar />
         <Container style={{ paddingTop: 24 }}>
           <Grid container direction="column" alignItems="center">
-            <React.Fragment>
+            <Typography variant="h3" color="initial">
+              {!load && data ? data.name.full : <Skeleton width={300} />}
+            </Typography>
+            <Typography variant="h4" color="initial">
+              {!load && data ? data?.name?.native : <Skeleton width={200} />}
+            </Typography>
+            {error && (
               <Typography variant="h3" color="initial">
-                {!load && data ? data.name.full : <Skeleton width={300} />}
+                {error}
               </Typography>
-              <Typography variant="h4" color="initial">
-                {!load && data ? data?.name?.native : <Skeleton width={200} />}
-              </Typography>
-              {error && (
-                <Typography variant="h3" color="initial">
-                  {error}
-                </Typography>
-              )}
-            </React.Fragment>
-
-            <br />
-            {!load && data ? (
-              <Grid
-                className={classes.profile}
-                container
-                alignItems="center"
-                justify="space-evenly"
-              >
-                <Grid
-                  item
-                  xs={12}
-                  md={4}
-                  style={{ display: "flex", justifyContent: "center" }}
-                >
-                  <Image
-                    src={data.image.large}
-                    alt={`Image of ${data.name.full}`}
-                    width={200}
-                    height={300}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={8}
-                  style={{ textAlign: "center", paddingTop: 16 }}
-                >
-                  <Typography variant="h6" color="initial">
-                    Average Anime Score:{" "}
-                    <strong>
-                      {data.characterMedia.edges.reduce((acc, c) => {
-                        return acc + c.node.averageScore;
-                      }, 0) / data.characterMedia.edges.length}
-                    </strong>
-                  </Typography>
-                  <Chart anime={data.characterMedia.edges} />
-                </Grid>
-              </Grid>
-            ) : (
-              <Skeleton variant="rect" width="100%" height="40vh" />
             )}
             <br />
-            <FormControl>
-              <FormLabel>Select Top</FormLabel>
-              <RadioGroup
-                row
-                value={router.query.t ?? "10"}
-                onChange={(e) => {
-                  setLoad(true);
-                  router.push(
-                    `?s=${router.query.s ?? "Ayane"}&t=${e.target.value}`,
-                    `?s=${router.query.s ?? "Ayane"}&t=${e.target.value}`,
-                    {
-                      scroll: false,
-                    }
-                  );
-                }}
-              >
-                <FormControlLabel value="5" control={<Radio />} label="5" />
-                <FormControlLabel value="10" control={<Radio />} label="10" />
-                <FormControlLabel value="20" control={<Radio />} label="20" />
-              </RadioGroup>
-            </FormControl>
+            {!load && data ? (
+              <Grow in={!load} timeout={400}>
+                <SeiyuuProfile data={data} rankType={rankType} />
+              </Grow>
+            ) : (
+              <Skeleton
+                variant="rect"
+                width="100%"
+                height={matchMD ? 560 : 880}
+                style={{ borderRadius: 16 }}
+              />
+            )}
+            <br />
+            <Grid container justify="space-evenly" style={{ width: "100%" }}>
+              <FormControl>
+                <FormLabel>Select Top</FormLabel>
+                <RadioGroup
+                  row
+                  value={router.query.t ?? "10"}
+                  onChange={(e) => {
+                    setLoad(true);
+                    params.set("t", e.target.value);
+                    router.push(
+                      "?" + params.toString(),
+                      "?" + params.toString(),
+                      {
+                        scroll: false,
+                      }
+                    );
+                  }}
+                >
+                  <FormControlLabel value="5" control={<Radio />} label="5" />
+                  <FormControlLabel value="10" control={<Radio />} label="10" />
+                  <FormControlLabel value="20" control={<Radio />} label="20" />
+                </RadioGroup>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Rank By</FormLabel>
+                <RadioGroup
+                  row
+                  value={router.query.r ?? SCORE_DESC}
+                  onChange={(e) => {
+                    setLoad(true);
+                    params.set("r", e.target.value);
+                    router.push(
+                      "?" + params.toString(),
+                      "?" + params.toString(),
+                      {
+                        scroll: false,
+                      }
+                    );
+                  }}
+                >
+                  <FormControlLabel
+                    value={SCORE_DESC}
+                    control={<Radio />}
+                    label="Score"
+                  />
+                  <FormControlLabel
+                    value={POPULARITY_DESC}
+                    control={<Radio />}
+                    label="Popularity"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
           </Grid>
-          {data && (
-            <AnimeGridList load={load} data={data.characterMedia.edges} />
-          )}
+          <AnimeGridList
+            load={load}
+            data={data?.characterMedia?.edges}
+            rankType={rankType}
+          />
         </Container>
-        <Backdrop className={classes.backdrop} open={load}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
       </Box>
     </>
   );
@@ -284,13 +306,13 @@ export default Seiyuu;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const apl = initApollo();
-
   try {
     const res = await apl.query({
       query: SEIYUU_SCORE,
       variables: {
         staffSearch: query.s ?? "Ayane",
         top: Number(query.t ?? "10"),
+        rankBy: query.r ?? [SCORE_DESC],
       },
     });
 

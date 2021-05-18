@@ -1,4 +1,8 @@
-import { SEIYUU_SCORE } from "../graphql/query";
+import {
+  POPULARITY_DESC,
+  RankSortType,
+  SCORE_DESC,
+} from "../interfaces/seiyuu";
 import { SeiyuuInfo } from "../interfaces/seiyuu";
 import {
   AppBar,
@@ -12,6 +16,7 @@ import {
   InputBase,
   Radio,
   RadioGroup,
+  Slide,
   Toolbar,
   useMediaQuery,
 } from "@material-ui/core";
@@ -22,14 +27,10 @@ import {
   makeStyles,
   Theme,
 } from "@material-ui/core/styles";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React, { useEffect, useRef, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import dynamic from "next/dynamic";
 import HideOnScroll from "../components/HideOnScroll";
 import AnimeGridList from "../components/AnimeGridList";
 import Head from "next/head";
@@ -37,8 +38,10 @@ import Link from "next/link";
 import { useQuery } from "@apollo/client";
 import { Skeleton } from "@material-ui/lab";
 import Grow from "@material-ui/core/Grow";
-
-const Chart = dynamic(() => import("../components/Chart"), { ssr: false });
+import { useSpeed } from "../hooks/useSpeed";
+import { SeiyuuProfile } from "../components/SeiyuuProfile";
+import { SEIYUU_SCORE } from "../graphql/query";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -102,15 +105,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "space-between",
     },
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: "#fff",
-    },
-    profile: {
-      backgroundColor: "lightgrey",
-      borderRadius: 16,
-      padding: theme.spacing(2),
-    },
   })
 );
 
@@ -118,32 +112,40 @@ type Props = {
   window: () => Window;
 };
 
-type Res = {
-  Staff: SeiyuuInfo;
-};
-
 const Seiyuu = ({ window }: Props) => {
   const router = useRouter();
   const classes = useStyles();
+  const speed = useSpeed();
 
-  const res = useQuery<Res>(SEIYUU_SCORE, {
+  const [search, setSearch] = useState("");
+  const [load, setLoad] = useState(true);
+
+  const searchInput = useRef<HTMLInputElement>(null);
+  const matchMD = useMediaQuery<Theme>((theme) => theme.breakpoints.up("md"));
+  const { enqueueSnackbar } = useSnackbar();
+
+  const params = new URLSearchParams(router.asPath.split("?")[1]);
+
+  const res = useQuery<{ Staff: SeiyuuInfo }>(SEIYUU_SCORE, {
     variables: {
       staffSearch: router.query.s ?? "Ayane",
       top: Number(router.query.t ?? "10"),
+      rankBy: router.query.r ?? [SCORE_DESC],
     },
   });
 
   const { loading, error, previousData } = res;
 
-  const data = res.data ? res.data.Staff : previousData?.Staff;
-
-  const [search, setSearch] = useState("");
-  const [load, setLoad] = useState(true);
-
-  const matchMD = useMediaQuery<Theme>((theme) => theme.breakpoints.up("md"));
+  const data = res.data?.Staff ?? previousData?.Staff;
+  const rankType = (router.query.r as RankSortType) ?? SCORE_DESC;
 
   useEffect(() => {
     setLoad(loading);
+    if (error && !loading) {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+      });
+    }
   }, [res]);
 
   return (
@@ -156,150 +158,168 @@ const Seiyuu = ({ window }: Props) => {
         />
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest_seiyuu.json" />
+        <meta name="application-name" content="Seiyuu Anime Ranking" />
       </Head>
-      <Box className={classes.background}>
-        <HideOnScroll window={window}>
-          <AppBar>
-            <Toolbar className={classes.toolbar}>
-              <Link href="/">
-                <IconButton edge="start">
-                  <ArrowBackIosIcon style={{ color: "white" }} />
-                </IconButton>
-              </Link>
-              <Typography
-                className={classes.titleAppbar}
-                variant="h6"
-                color="initial"
-              >
-                Seiyuu Anime Ranking
-              </Typography>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setLoad(true);
-                    router.push(
-                      `?s=${search}&t=${router.query.t ?? "10"}`,
-                      `?s=${search}&t=${router.query.t ?? "10"}`,
-                      {
-                        scroll: false,
-                      }
-                    );
-                  }}
+      <Slide
+        in={true}
+        direction="left"
+        timeout={speed}
+        mountOnEnter
+        unmountOnExit
+      >
+        <Box className={classes.background}>
+          <HideOnScroll window={window}>
+            <AppBar>
+              <Toolbar className={classes.toolbar}>
+                <Link href="/">
+                  <IconButton edge="start">
+                    <ArrowBackIosIcon style={{ color: "white" }} />
+                  </IconButton>
+                </Link>
+                <Typography
+                  className={classes.titleAppbar}
+                  variant="h6"
+                  color="initial"
                 >
-                  <InputBase
-                    placeholder="Search…"
-                    classes={{
-                      root: classes.inputRoot,
-                      input: classes.inputInput,
+                  Seiyuu Anime Ranking
+                </Typography>
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (search === "") return;
+                      searchInput.current?.blur();
+                      setLoad(true);
+                      params.set("s", search);
+                      router.push(
+                        "?" + params.toString(),
+                        "?" + params.toString(),
+                        {
+                          scroll: false,
+                        }
+                      );
                     }}
-                    inputProps={{ "aria-label": "search" }}
-                    value={search}
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                    }}
-                  />
-                </form>
-              </div>
-            </Toolbar>
-          </AppBar>
-        </HideOnScroll>
-        <Toolbar />
-        <Container style={{ paddingTop: 24 }}>
-          <Grid container direction="column" alignItems="center">
-            <Typography variant="h3" color="initial">
-              {!loading && data ? data.name.full : <Skeleton width={300} />}
-            </Typography>
-            <Typography variant="h4" color="initial">
-              {!loading && data ? data?.name?.native : <Skeleton width={200} />}
-            </Typography>
-            {error && (
-              <Typography variant="h3" color="initial">
-                {error}
-              </Typography>
-            )}
-
-            <br />
-            {!loading && data ? (
-              <Grow in={!loading} timeout={400}>
-                <Grid
-                  className={classes.profile}
-                  container
-                  alignItems="center"
-                  justify="space-evenly"
-                  style={{ height: matchMD ? 560 : 880 }}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={4}
-                    style={{ display: "flex", justifyContent: "center" }}
                   >
-                    <Image
-                      src={data.image.large}
-                      alt={`Image of ${data.name.full}`}
-                      width={200}
-                      height={300}
+                    <InputBase
+                      placeholder="Search…"
+                      classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                      }}
+                      inputProps={{ "aria-label": "search" }}
+                      value={search}
+                      inputRef={searchInput}
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                      }}
                     />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={8}
-                    style={{ textAlign: "center", paddingTop: 16 }}
+                  </form>
+                </div>
+              </Toolbar>
+            </AppBar>
+          </HideOnScroll>
+          <Toolbar />
+          <Container style={{ paddingTop: 24 }}>
+            <Grid container direction="column" alignItems="center">
+              <Typography variant="h3" color="initial">
+                {!loading && data ? data.name.full : <Skeleton width={300} />}
+              </Typography>
+              <Typography variant="h4" color="initial">
+                {!loading && data ? (
+                  data?.name?.native
+                ) : (
+                  <Skeleton width={200} />
+                )}
+              </Typography>
+              <br />
+              {!loading && data ? (
+                <Grow in={!loading} timeout={400}>
+                  <SeiyuuProfile data={data} rankType={rankType} />
+                </Grow>
+              ) : (
+                <Skeleton
+                  variant="rect"
+                  width="100%"
+                  height={matchMD ? 560 : 880}
+                  style={{ borderRadius: 16 }}
+                />
+              )}
+              <br />
+              <Grid container justify="space-evenly" style={{ width: "100%" }}>
+                <FormControl>
+                  <FormLabel>Select Top</FormLabel>
+                  <RadioGroup
+                    row
+                    value={router.query.t ?? "10"}
+                    onChange={(e) => {
+                      setLoad(true);
+                      params.set("t", e.target.value);
+                      router.push(
+                        "?" + params.toString(),
+                        "?" + params.toString(),
+                        {
+                          scroll: false,
+                        }
+                      );
+                    }}
                   >
-                    <Typography variant="h6" color="initial">
-                      Average Anime Score:{" "}
-                      <strong>
-                        {data.characterMedia.edges.reduce((acc, c) => {
-                          return acc + c.node.averageScore;
-                        }, 0) / data.characterMedia.edges.length}
-                      </strong>
-                    </Typography>
-                    <Chart anime={data.characterMedia.edges} />
-                  </Grid>
-                </Grid>
-              </Grow>
-            ) : (
-              <Skeleton
-                variant="rect"
-                width="100%"
-                height={matchMD ? 560 : 880}
-              />
-            )}
-            <br />
-            <FormControl>
-              <FormLabel>Select Top</FormLabel>
-              <RadioGroup
-                row
-                value={router.query.t ?? "10"}
-                onChange={(e) => {
-                  setLoad(true);
-                  router.push(
-                    `?s=${router.query.s ?? "Ayane"}&t=${e.target.value}`,
-                    `?s=${router.query.s ?? "Ayane"}&t=${e.target.value}`,
-                    {
-                      scroll: false,
-                    }
-                  );
-                }}
-              >
-                <FormControlLabel value="5" control={<Radio />} label="5" />
-                <FormControlLabel value="10" control={<Radio />} label="10" />
-                <FormControlLabel value="20" control={<Radio />} label="20" />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
+                    <FormControlLabel value="5" control={<Radio />} label="5" />
+                    <FormControlLabel
+                      value="10"
+                      control={<Radio />}
+                      label="10"
+                    />
+                    <FormControlLabel
+                      value="20"
+                      control={<Radio />}
+                      label="20"
+                    />
+                  </RadioGroup>
+                </FormControl>
 
-          <AnimeGridList load={load} data={data?.characterMedia?.edges} />
-        </Container>
-        <Backdrop className={classes.backdrop} open={load}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      </Box>
+                <FormControl>
+                  <FormLabel>Rank By</FormLabel>
+                  <RadioGroup
+                    row
+                    value={router.query.r ?? SCORE_DESC}
+                    onChange={(e) => {
+                      setLoad(true);
+                      params.set("r", e.target.value);
+                      router.push(
+                        "?" + params.toString(),
+                        "?" + params.toString(),
+                        {
+                          scroll: false,
+                        }
+                      );
+                    }}
+                  >
+                    <FormControlLabel
+                      value={SCORE_DESC}
+                      control={<Radio />}
+                      label="Score"
+                    />
+                    <FormControlLabel
+                      value={POPULARITY_DESC}
+                      control={<Radio />}
+                      label="Popularity"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <AnimeGridList
+              load={load}
+              data={data?.characterMedia?.edges}
+              rankType={rankType}
+            />
+          </Container>
+        </Box>
+      </Slide>
     </>
   );
 };

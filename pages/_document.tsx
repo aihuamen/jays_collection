@@ -8,11 +8,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta
-            name="description"
-            content='Collection of something "Q u a l i t y"'
-          />
-          <meta name="application-name" content="Jay's Collection" />
+          
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"

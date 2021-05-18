@@ -17,6 +17,7 @@ import { AnimeCharEdge } from "../interfaces/seiyuu";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Skeleton } from "@material-ui/lab";
+import { RankSortType, SCORE_DESC } from "../interfaces/seiyuu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,10 +42,11 @@ const useStyles = makeStyles((theme: Theme) =>
 interface ITile {
   load: boolean;
   data?: AnimeCharEdge[];
+  rankType: RankSortType;
 }
 
-const AnimeGridList: React.FC<ITile> = ({ data, load }) => {
-  const router = useRouter();
+const AnimeGridList: React.FC<ITile> = ({ data, load, rankType }) => {
+  const { query } = useRouter();
   const classes = useStyles();
 
   const matchSM = useMediaQuery<Theme>((theme) => theme.breakpoints.up("sm"));
@@ -80,7 +82,7 @@ const AnimeGridList: React.FC<ITile> = ({ data, load }) => {
       spacing={20}
     >
       {load || !data
-        ? [...Array(Number(router.query.t ?? 10)).keys()].map((i) => (
+        ? [...Array(Number(query.t ?? 10)).keys()].map((i) => (
             <GridListTile key={i} style={{ height: 380 }}>
               <Skeleton
                 className={classes.skeleton}
@@ -102,25 +104,68 @@ const AnimeGridList: React.FC<ITile> = ({ data, load }) => {
                       ({a.node.seasonYear})
                     </Typography>
                     <Grid container alignItems="center" justify="space-evenly">
-                      <Grid item xs={6} style={{ textAlign: "center" }}>
-                        <Typography variant="h6" color="initial">
-                          Average Score: {a.node.averageScore}
-                        </Typography>
-                        <Typography variant="h6" color="initial">
-                          Mean Score: {a.node.meanScore}
-                        </Typography>
-                        <br />
-                        <Divider />
-                        <br />
-                        <Typography variant="body1" color="initial">
-                          Ranked:{" "}
-                          {
-                            a.node.rankings.find(
-                              (r) => r.allTime === true && r.type === "RATED"
-                            )?.rank
-                          }
-                        </Typography>
-                      </Grid>
+                      {rankType === SCORE_DESC ? (
+                        <Grid item xs={6} style={{ textAlign: "center" }}>
+                          <Typography variant="h6" color="initial">
+                            Average Score: {a.node.averageScore}
+                          </Typography>
+                          <Typography variant="h6" color="initial">
+                            Mean Score: {a.node.meanScore}
+                          </Typography>
+                          <Typography variant="subtitle1" color="initial">
+                            Popularity: {a.node.popularity}
+                          </Typography>
+                          <br />
+                          <Divider />
+                          <br />
+                          <Typography variant="body1" color="initial">
+                            Score Rank:{" "}
+                            {
+                              a.node.rankings.find(
+                                (r) => r.allTime === true && r.type === "RATED"
+                              )?.rank
+                            }
+                          </Typography>
+                          <Typography variant="body2" color="initial">
+                            Popularity Rank:{" "}
+                            {
+                              a.node.rankings.find(
+                                (r) =>
+                                  r.allTime === true && r.type === "POPULAR"
+                              )?.rank
+                            }
+                          </Typography>
+                        </Grid>
+                      ) : (
+                        <Grid item xs={6} style={{ textAlign: "center" }}>
+                          <Typography variant="h6" color="initial">
+                            Popularity: {a.node.popularity}
+                          </Typography>
+                          <Typography variant="subtitle1" color="initial">
+                            Average Score: {a.node.averageScore}
+                          </Typography>
+                          <br />
+                          <Divider />
+                          <br />
+                          <Typography variant="body1" color="initial">
+                            Popularity Rank:{" "}
+                            {
+                              a.node.rankings.find(
+                                (r) =>
+                                  r.allTime === true && r.type === "POPULAR"
+                              )?.rank
+                            }
+                          </Typography>
+                          <Typography variant="body2" color="initial">
+                            Score Rank:{" "}
+                            {
+                              a.node.rankings.find(
+                                (r) => r.allTime === true && r.type === "RATED"
+                              )?.rank
+                            }
+                          </Typography>
+                        </Grid>
+                      )}
                       <Grid
                         item
                         xs={6}
