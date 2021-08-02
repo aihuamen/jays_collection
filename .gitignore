@@ -18,9 +18,9 @@
 # misc
 .DS_Store
 *.pem
-**/public/workbox-*.js
-**/public/sw.js
-**/public/fallback-*.js
+**/public/workbox-*.js*
+**/public/sw.js*
+**/public/fallback-*.js*
 
 # debug
 npm-debug.log*
