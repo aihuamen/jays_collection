@@ -1,6 +1,6 @@
 import Chart from "react-apexcharts";
-import { RankSortType, SCORE_DESC } from "../interfaces/seiyuu";
-import { AnimeCharEdge } from "../interfaces/seiyuu";
+import { RankSortType, SCORE_DESC } from "../../interfaces/seiyuu";
+import { AnimeCharEdge } from "../../interfaces/seiyuu";
 
 interface IChart {
   anime: AnimeCharEdge[];

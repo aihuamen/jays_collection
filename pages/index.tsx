@@ -65,6 +65,10 @@ const IndexPage = () => {
       <Head>
         <title>Jay's collection</title>
         <meta charSet="utf-8" />
+        <meta
+          name="description"
+          content='Collection of something "Q u a l i t y"'
+        />
         <link rel="manifest" href="/manifest.json" />
         <meta name="application-name" content="Jay's Collection" />
       </Head>

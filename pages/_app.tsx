@@ -8,7 +8,7 @@ import { SnackbarProvider } from "notistack";
 import React from "react";
 import { useApollo } from "../graphql/client";
 import "../style/style.css";
-import MyTheme from "../theme/theme";
+import MyTheme from "../theme";
 
 export default function App({ Component, pageProps }: AppProps) {
   const client = useApollo(pageProps.initialApolloState);

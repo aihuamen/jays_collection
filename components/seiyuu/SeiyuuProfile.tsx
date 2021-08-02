@@ -7,12 +7,12 @@ import {
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
-import { RankSortType, SCORE_DESC } from "../interfaces/seiyuu";
+import { RankSortType, SCORE_DESC } from "../../interfaces/seiyuu";
 import Image from "next/image";
-import { SeiyuuInfo } from "../interfaces/seiyuu";
+import { SeiyuuInfo } from "../../interfaces/seiyuu";
 import dynamic from "next/dynamic";
 
-const AnimeChart = dynamic(() => import("../components/AnimeChart"), {
+const AnimeChart = dynamic(() => import("./AnimeChart"), {
   ssr: false,
 });
 
@@ -31,7 +31,7 @@ interface IProfile {
   rankType: RankSortType;
 }
 
-export const SeiyuuProfile: React.FC<IProfile> = ({ data, rankType }) => {
+const SeiyuuProfile: React.FC<IProfile> = ({ data, rankType }) => {
   const classes = useStyles();
   const matchMD = useMediaQuery<Theme>((theme) => theme.breakpoints.up("md"));
 
@@ -81,3 +81,5 @@ export const SeiyuuProfile: React.FC<IProfile> = ({ data, rankType }) => {
     </Grid>
   );
 };
+
+export default SeiyuuProfile;
