@@ -1,8 +1,10 @@
-import { Theme, ImageList, ImageListItem, useMediaQuery, Grow, styled } from "@mui/material";
+import { Theme, useMediaQuery } from "@mui/material";
 import React from "react";
 import { AnimeCharEdge } from "../../interfaces/seiyuu";
 import { useRouter } from "next/router";
-import { Skeleton } from '@mui/material';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import Skeleton from '@mui/material/Skeleton';
 import { RankSortType } from "../../interfaces/seiyuu";
 import AnimeCard from "./AnimeCard";
 
