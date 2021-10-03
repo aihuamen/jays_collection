@@ -6,7 +6,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     mode: "light",
   },
@@ -22,6 +22,6 @@ const theme = createTheme({
   },
 });
 
-const myTheme = responsiveFontSizes(theme);
+theme = responsiveFontSizes(theme);
 
-export default myTheme;
+export default theme;

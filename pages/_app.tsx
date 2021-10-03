@@ -1,6 +1,6 @@
 import { ApolloProvider } from "@apollo/client";
-import { StyledEngineProvider, Theme, useMediaQuery } from "@mui/material";
-import { ThemeProvider } from "@mui/styles";
+import { StyledEngineProvider, useMediaQuery } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { SnackbarProvider } from "notistack";
@@ -8,13 +8,6 @@ import React from "react";
 import { useApollo } from "../graphql/client";
 import "../style/style.css";
 import MyTheme from "../theme";
-
-
-declare module '@mui/styles/defaultTheme' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
-
 
 export default function App({ Component, pageProps }: AppProps) {
   const client = useApollo(pageProps.initialApolloState);
