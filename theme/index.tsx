@@ -1,14 +1,14 @@
-import { createMuiTheme, responsiveFontSizes } from "@material-ui/core";
+import { createTheme, responsiveFontSizes } from "@mui/material";
 
-declare module "@material-ui/core/styles/createBreakpoints" {
+declare module "@mui/material/styles" {
   interface BreakpointOverrides {
     custom: true;
   }
 }
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
-    type: "light",
+    mode: "light",
   },
   breakpoints: {
     values: {

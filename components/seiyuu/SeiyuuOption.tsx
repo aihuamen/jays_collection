@@ -1,12 +1,12 @@
 import React from "react";
 import { POPULARITY_DESC, SCORE_DESC } from "../../interfaces/seiyuu";
 import { useRouter } from "next/router";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import Grid from "@material-ui/core/Grid";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import Grid from "@mui/material/Grid";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 
 interface ISeiyuuSelect {
   setLoad: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,7 +25,7 @@ const SeiyuuSelect: React.FC<ISeiyuuSelect> = ({ setLoad }) => {
   };
 
   return (
-    <Grid container justify="space-evenly" style={{ width: "100%" }}>
+    <Grid container justifyContent="space-evenly" style={{ width: "100%" }}>
       <FormControl>
         <FormLabel>Select Top</FormLabel>
         <RadioGroup

@@ -1,17 +1,7 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import {
-  makeStyles,
-  Theme,
-  createStyles,
-  Box,
-  Typography,
-  Container,
-  Divider,
-  CssBaseline,
-  Slide,
-  Fade,
-} from "@material-ui/core";
+import { Theme, Box, Typography, Container, Divider, CssBaseline, Slide, Fade } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import createStyles from '@mui/styles/createStyles';
 import React from "react";
 import Head from "next/head";
 import { useSpeed } from "../hooks/useSpeed";
@@ -56,14 +46,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const IndexPage = () => {
-  const router = useRouter();
   const classes = useStyles();
   const speed = useSpeed();
 
   return (
     <>
       <Head>
-        <title>Jay's collection</title>
+        <title>Jay&apos;s collection</title>
         <meta charSet="utf-8" />
         <meta
           name="description"
@@ -84,7 +73,7 @@ const IndexPage = () => {
           <Container>
             <Box paddingTop="5vh">
               <Typography variant="h1" color="initial">
-                Jay's collection
+                Jay&apos;s collection
               </Typography>
               <br />
               <Divider />
@@ -92,7 +81,7 @@ const IndexPage = () => {
               <Typography variant="h2" color="initial">
                 Collection of something <br />
                 <Fade in={true} timeout={1800}>
-                  <i>"Q u a l i t y"</i>
+                  <i>&quot;Q u a l i t y&quot;</i>
                 </Fade>
               </Typography>
               <br />

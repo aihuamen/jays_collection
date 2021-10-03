@@ -10,4 +10,7 @@ module.exports = withPWA({
   images: {
     domains: ["s4.anilist.co"],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  }
 });

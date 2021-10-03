@@ -1,4 +1,4 @@
-import { Theme, useMediaQuery, useTheme } from "@material-ui/core";
+import { Theme, useMediaQuery, useTheme } from "@mui/material";
 
 export const useSpeed = () => {
   const theme = useTheme();
