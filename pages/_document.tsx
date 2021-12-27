@@ -2,6 +2,8 @@ import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import ServerStyleSheets from '@mui/styles/ServerStyleSheets';
 import { AppleLink } from "../components/metadata/AppleLink";
+import { OGLink } from "../components/metadata/OGLink";
+import { TwitterLink } from "../components/metadata/TwiiterLink";
 
 export default class MyDocument extends Document {
   render() {
@@ -52,6 +54,8 @@ export default class MyDocument extends Document {
           />
           <link rel="shortcut icon" href="/icons/favicon.ico" />
           <AppleLink />
+          <OGLink />
+          <TwitterLink/>
         </Head>
         <body>
           <Main />

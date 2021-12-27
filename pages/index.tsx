@@ -1,52 +1,18 @@
 import Link from "next/link";
-import { Theme, Box, Typography, Container, Divider, CssBaseline, Slide, Fade } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
-import createStyles from '@mui/styles/createStyles';
+import { Box, Typography, Container, Divider, CssBaseline, Slide, Fade } from "@mui/material";
+import { styled } from '@mui/system'
 import React from "react";
 import Head from "next/head";
 import { useSpeed } from "../hooks/useSpeed";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    header: {
-      minHeight: "25vh",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    register: {
-      width: 200,
-      height: 45,
-      fontSize: 16,
-      color: "white",
-      backgroundColor: "#ffa601",
-      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-      borderRadius: "5px",
-    },
-    login: {
-      background: "rgba(255, 255, 255, 0.7)",
-      border: "1px solid #494949",
-      boxSizing: "border-box",
-      borderRadius: 5,
-      textAlign: "center",
-      height: 45,
-      width: 100,
-      textDecoration: "none",
-      display: "inline-block",
-      fontSize: 16,
-    },
-    background: {
-      textAlign: "center",
-      background: "-webkit-linear-gradient(270deg, #ffa601 0%, #ffffff 100%)",
-      minHeight: "100vh",
-      paddingTop: theme.spacing(3),
-    },
-  })
-);
+const Background = styled('div')(({ theme }) => ({
+  textAlign: "center",
+  background: "-webkit-linear-gradient(270deg, #ffa601 0%, #ffffff 100%)",
+  minHeight: "100vh",
+  paddingTop: theme.spacing(3),
+}))
 
 const IndexPage = () => {
-  const classes = useStyles();
   const speed = useSpeed();
 
   return (
@@ -68,7 +34,7 @@ const IndexPage = () => {
         mountOnEnter
         unmountOnExit
       >
-        <div className={classes.background}>
+        <Background>
           <CssBaseline />
           <Container>
             <Box paddingTop="5vh">
@@ -119,7 +85,7 @@ const IndexPage = () => {
               </Typography>
             </Typography>
           </Container>
-        </div>
+        </Background>
       </Slide>
     </>
   );
