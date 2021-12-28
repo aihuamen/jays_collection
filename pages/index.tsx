@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import Head from 'next/head';
-import { useSpeed } from '../hooks/useSpeed';
+import { useSpeed } from '../src/hooks';
 import { NextPage } from 'next';
 
 const IndexPage: NextPage = () => {

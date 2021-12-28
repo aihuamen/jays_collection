@@ -1,9 +1,9 @@
-import { SEIYUU_SCORE } from '../graphql/query';
-import { RankSortType, SCORE_DESC, SeiyuuInfo } from '../interfaces/seiyuu';
+import { SEIYUU_SCORE } from '../src/graphql/query';
+import { RankSortType, SCORE_DESC, SeiyuuInfo } from '../src/interfaces/seiyuu';
 import { Theme } from '@mui/material/styles';
 import { useRouter } from 'next/router';
-import { initApollo } from '../graphql/client';
-import { GetServerSideProps } from 'next';
+import { initApollo } from '../src/graphql/client';
+import { GetServerSideProps, NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -11,12 +11,12 @@ import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Typography from '@mui/material/Typography';
-import AnimeGridList from '../components/seiyuu/AnimeGridList';
+import AnimeGridList from '../src/components/seiyuu/AnimeGridList';
 import Head from 'next/head';
 import Skeleton from '@mui/material/Skeleton';
-import SeiyuuProfile from '../components/seiyuu/SeiyuuProfile';
-import AppBar from '../components/utils/AppBar';
-import SeiyuuOption from '../components/seiyuu/SeiyuuOption';
+import SeiyuuProfile from '../src/components/seiyuu/SeiyuuProfile';
+import AppBar from '../src/components/utils/AppBar';
+import SeiyuuOption from '../src/components/seiyuu/SeiyuuOption';
 
 type Props = {
   data?: SeiyuuInfo;
@@ -24,7 +24,7 @@ type Props = {
   error?: string;
 };
 
-const SeiyuuSSR = ({ data, error }: Props) => {
+const SeiyuuSSR: NextPage<Props> = ({ data, error }) => {
   const router = useRouter();
   const [load, setLoad] = useState(true);
   const rankType = (router.query.r as RankSortType) ?? SCORE_DESC;

@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
+import { NextPage } from 'next';
 
-const OfflinePage = () => {
+const OfflinePage: NextPage = () => {
   return <Typography variant="h2">Offline la</Typography>;
 };
 

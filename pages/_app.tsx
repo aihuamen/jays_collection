@@ -1,15 +1,18 @@
 import { ApolloProvider } from '@apollo/client';
 import { EmotionCache, CacheProvider } from '@emotion/react';
-import { useMediaQuery } from '@mui/material';
+import { PaletteMode, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { SnackbarProvider } from 'notistack';
-import React from 'react';
-import { useApollo } from '../graphql/client';
+import React, { useMemo, useState } from 'react';
+import { useApollo } from '../src/graphql/client';
 import '../style/style.css';
-import MyTheme from '../theme';
-import createEmotionCache from '../utils/createEmotionCache';
+import { generateTheme } from '../src/theme';
+import { ColorModeContext } from '../src/context/ColorModeContext';
+import createEmotionCache from '../src/utils/createEmotionCache';
+import { NextPage } from 'next';
+import { IColorToggleMode } from '../src/context/ColorModeContext';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -17,11 +20,21 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-export default function App({
+const App: NextPage<MyAppProps> = ({
   Component,
   emotionCache = clientSideEmotionCache,
   pageProps,
-}: MyAppProps) {
+}) => {
+  const [mode, setMode] = useState<PaletteMode>('light');
+  const colorMode = useMemo<IColorToggleMode>(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    []
+  );
+  const theme = useMemo(() => generateTheme(mode), [mode]);
   const client = useApollo(pageProps.initialApolloState);
   const downSM = useMediaQuery('(max-width:600px)');
   return (
@@ -33,14 +46,18 @@ export default function App({
         />
       </Head>
       <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={MyTheme}>
-          <SnackbarProvider autoHideDuration={3000} dense={downSM}>
-            <ApolloProvider client={client}>
-              <Component {...pageProps} />
-            </ApolloProvider>
-          </SnackbarProvider>
-        </ThemeProvider>
+        <ColorModeContext.Provider value={colorMode}>
+          <ThemeProvider theme={theme}>
+            <SnackbarProvider autoHideDuration={3000} dense={downSM}>
+              <ApolloProvider client={client}>
+                <Component {...pageProps} />
+              </ApolloProvider>
+            </SnackbarProvider>
+          </ThemeProvider>
+        </ColorModeContext.Provider>
       </CacheProvider>
     </>
   );
-}
+};
+
+export default App;

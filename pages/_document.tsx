@@ -7,10 +7,10 @@ import Document, {
   DocumentInitialProps,
 } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
-import { AppleLink } from '../components/metadata/AppleLink';
-import { OGLink } from '../components/metadata/OGLink';
-import { TwitterLink } from '../components/metadata/TwiiterLink';
-import createEmotionCache from '../utils/createEmotionCache';
+import { AppleLink } from '../src/components/metadata/AppleLink';
+import { OGLink } from '../src/components/metadata/OGLink';
+import { TwitterLink } from '../src/components/metadata/TwiiterLink';
+import createEmotionCache from '../src/utils/createEmotionCache';
 
 type DocumentProps = DocumentInitialProps & { emotionStyleTags: JSX.Element[] };
 

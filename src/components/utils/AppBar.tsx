@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,6 +10,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { alpha, styled } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import HideOnScroll from './HideOnScroll';
+import { ColorModeContext } from '../../context/ColorModeContext';
+import Button from '@mui/material/Button';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,6 +64,7 @@ interface IAppBar {
 const AppBar: React.FC<IAppBar> = ({ title, includeSearch, setLoad }) => {
   const router = useRouter();
   const [search, setSearch] = useState('');
+  const { toggleColorMode } = useContext(ColorModeContext);
   const searchInput = useRef<HTMLInputElement>(null);
 
   const params = new URLSearchParams(router.asPath.split('?')[1]);
@@ -105,6 +108,13 @@ const AppBar: React.FC<IAppBar> = ({ title, includeSearch, setLoad }) => {
           >
             {title}
           </Typography>
+          <Button
+            onClick={toggleColorMode}
+            variant="contained"
+            color="secondary"
+          >
+            Light/Dark
+          </Button>
           {includeSearch && setLoad && (
             <Search>
               <SearchIconWrapper>
