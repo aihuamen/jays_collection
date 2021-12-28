@@ -8,8 +8,6 @@ import Document, {
 } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import { AppleLink } from '../src/components/metadata/AppleLink';
-import { OGLink } from '../src/components/metadata/OGLink';
-import { TwitterLink } from '../src/components/metadata/TwiiterLink';
 import createEmotionCache from '../src/utils/createEmotionCache';
 
 type DocumentProps = DocumentInitialProps & { emotionStyleTags: JSX.Element[] };
@@ -63,8 +61,6 @@ export default class MyDocument extends Document<DocumentProps> {
           />
           <link rel="shortcut icon" href="/icons/favicon.ico" />
           <AppleLink />
-          <OGLink />
-          <TwitterLink />
           {this.props.emotionStyleTags}
         </Head>
         <body>

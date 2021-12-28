@@ -12,6 +12,8 @@ import React from 'react';
 import Head from 'next/head';
 import { useSpeed } from '../src/hooks';
 import { NextPage } from 'next';
+import TwitterLink from '../src/components/metadata/TwiiterLink';
+import OGLink from '../src/components/metadata/OGLink';
 
 const IndexPage: NextPage = () => {
   const speed = useSpeed();
@@ -23,10 +25,18 @@ const IndexPage: NextPage = () => {
         <meta charSet="utf-8" />
         <meta
           name="description"
-          content='Collection of something "Q u a l i t y"'
+          content='Collection of something "Q U A L I T Y"'
         />
         <link rel="manifest" href="/manifest.json" />
         <meta name="application-name" content="Jay's Collection" />
+        <OGLink
+          title="Jay's collection"
+          description='Collection of something "Q U A L I T Y"'
+        />
+        <TwitterLink
+          title="Jay's collection"
+          description='Collection of something "Q U A L I T Y"'
+        />
       </Head>
       <Slide
         in={true}

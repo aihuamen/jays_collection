@@ -21,6 +21,8 @@ import { useSnackbar } from 'notistack';
 import AppBar from '../src/components/utils/AppBar';
 import SeiyuuSelect from '../src/components/seiyuu/SeiyuuOption';
 import { NextPage } from 'next';
+import TwitterLink from '../src/components/metadata/TwiiterLink';
+import OGLink from '../src/components/metadata/OGLink';
 
 const Seiyuu: NextPage = () => {
   const router = useRouter();
@@ -61,6 +63,16 @@ const Seiyuu: NextPage = () => {
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest_seiyuu.json" />
         <meta name="application-name" content="Seiyuu Anime Ranking" />
+        <OGLink
+          page="/seiyuu"
+          title="Seiyuu Anime Ranking"
+          description="Finding the best anime your Seiyuu has voiced"
+        />
+        <TwitterLink
+          page="/seiyuu"
+          title="Seiyuu Anime Ranking"
+          description="Finding the best anime your Seiyuu has voiced"
+        />
       </Head>
       <Slide
         in={true}

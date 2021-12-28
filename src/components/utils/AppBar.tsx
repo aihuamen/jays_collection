@@ -61,7 +61,11 @@ interface IAppBar {
   setLoad?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AppBar: React.FC<IAppBar> = ({ title, includeSearch, setLoad }) => {
+const AppBar: React.FC<IAppBar> = ({
+  title,
+  includeSearch = false,
+  setLoad,
+}) => {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const { toggleColorMode } = useContext(ColorModeContext);
@@ -112,6 +116,12 @@ const AppBar: React.FC<IAppBar> = ({ title, includeSearch, setLoad }) => {
             onClick={toggleColorMode}
             variant="contained"
             color="secondary"
+            sx={{
+              display: {
+                xs: 'none',
+                sm: 'block',
+              },
+            }}
           >
             Light/Dark
           </Button>
