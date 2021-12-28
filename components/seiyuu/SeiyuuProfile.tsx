@@ -1,20 +1,20 @@
-import Grow from "@mui/material/Grow";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import { RankSortType, SCORE_DESC } from "../../interfaces/seiyuu";
-import Image from "next/image";
-import { SeiyuuInfo } from "../../interfaces/seiyuu";
-import dynamic from "next/dynamic";
+import Grow from '@mui/material/Grow';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import React from 'react';
+import { RankSortType, SCORE_DESC } from '../../interfaces/seiyuu';
+import Image from 'next/image';
+import { SeiyuuInfo } from '../../interfaces/seiyuu';
+import dynamic from 'next/dynamic';
 
-const AnimeChart = dynamic(() => import("./AnimeChart"), {
+const AnimeChart = dynamic(() => import('./AnimeChart'), {
   ssr: false,
 });
 
 interface IProfile {
   data: SeiyuuInfo;
   rankType: RankSortType;
-  loading: boolean
+  loading: boolean;
 }
 
 const SeiyuuProfile: React.FC<IProfile> = ({ data, rankType, loading }) => {
@@ -25,20 +25,20 @@ const SeiyuuProfile: React.FC<IProfile> = ({ data, rankType, loading }) => {
         alignItems="center"
         justifyContent="space-evenly"
         sx={{
-          backgroundColor: "lightgrey",
+          backgroundColor: 'lightgrey',
           borderRadius: 2,
           padding: 2,
           height: {
             xs: '880px',
-            md: '550px'
-          }
+            md: '550px',
+          },
         }}
       >
         <Grid
           item
           xs={12}
           md={4}
-          style={{ display: "flex", justifyContent: "center" }}
+          style={{ display: 'flex', justifyContent: 'center' }}
         >
           <Image
             src={data.image.large}
@@ -47,10 +47,15 @@ const SeiyuuProfile: React.FC<IProfile> = ({ data, rankType, loading }) => {
             height={300}
           />
         </Grid>
-        <Grid item xs={12} md={8} style={{ textAlign: "center", paddingTop: 16 }}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          style={{ textAlign: 'center', paddingTop: 16 }}
+        >
           {rankType === SCORE_DESC ? (
             <Typography variant="h6" color="initial">
-              Average Anime Score:{" "}
+              Average Anime Score:{' '}
               <strong>
                 {data.characterMedia.edges.reduce((acc, c) => {
                   return acc + c.node.averageScore;
@@ -59,7 +64,7 @@ const SeiyuuProfile: React.FC<IProfile> = ({ data, rankType, loading }) => {
             </Typography>
           ) : (
             <Typography variant="h6" color="initial">
-              Average Anime Popularity:{" "}
+              Average Anime Popularity:{' '}
               <strong>
                 {data.characterMedia.edges.reduce((acc, c) => {
                   return acc + c.node.popularity;

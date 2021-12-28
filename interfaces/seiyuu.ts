@@ -1,10 +1,10 @@
-export type CharacterRole = "MAIN" | "SUPPORTING" | "BACKGROUND";
-export type RankingType = "RATED" | "POPULAR";
+export type CharacterRole = 'MAIN' | 'SUPPORTING' | 'BACKGROUND';
+export type RankingType = 'RATED' | 'POPULAR';
 
-export const POPULARITY_DESC = "POPULARITY_DESC";
-export const SCORE_DESC = "SCORE_DESC";
+export const POPULARITY_DESC = 'POPULARITY_DESC';
+export const SCORE_DESC = 'SCORE_DESC';
 
-export type RankSortType = "POPULARITY_DESC" | "SCORE_DESC";
+export type RankSortType = 'POPULARITY_DESC' | 'SCORE_DESC';
 export interface SeiyuuInfo {
   id: number;
   name: {

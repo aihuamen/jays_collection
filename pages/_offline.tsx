@@ -1,9 +1,7 @@
-import { Typography } from "@mui/material"
+import { Typography } from '@mui/material';
 
 const OfflinePage = () => {
-  return (
-    <Typography variant="h2">Offline la</Typography>
-  )
-}
+  return <Typography variant="h2">Offline la</Typography>;
+};
 
-export default OfflinePage
+export default OfflinePage;

@@ -1,34 +1,34 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Image from 'next/image';
 import {
   AnimeCharEdge,
   RankSortType,
   SCORE_DESC,
-} from "../../interfaces/seiyuu";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/system";
-import Grow from "@mui/material/Grow";
-import ImageListItem from "@mui/material/ImageListItem";
+} from '../../interfaces/seiyuu';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/system';
+import Grow from '@mui/material/Grow';
+import ImageListItem from '@mui/material/ImageListItem';
 
 const ACard = styled(Card)({
   minWidth: 100,
-  padding: "5px 10px",
-  backgroundColor: "rgba(0, 0, 0, 0.3)",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-  borderRadius: "20px",
-  height: "95%",
-})
+  padding: '5px 10px',
+  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+  borderRadius: '20px',
+  height: '95%',
+});
 
 interface IAnimeCard {
   anime: AnimeCharEdge;
   rank: number;
   rankType: RankSortType;
-  load: boolean
-  index: number
+  load: boolean;
+  index: number;
 }
 
 const rankColor = (rank: number) => {
@@ -36,15 +36,15 @@ const rankColor = (rank: number) => {
 
   switch (rank) {
     case 0:
-      style.backgroundColor = "#D6AF36";
+      style.backgroundColor = '#D6AF36';
       break;
 
     case 1:
-      style.backgroundColor = "#D7D7D7";
+      style.backgroundColor = '#D7D7D7';
       break;
 
     case 2:
-      style.backgroundColor = "#A77044";
+      style.backgroundColor = '#A77044';
       break;
 
     default:
@@ -54,14 +54,20 @@ const rankColor = (rank: number) => {
   return style;
 };
 
-const AnimeCard: React.FC<IAnimeCard> = ({ anime, rank, rankType, load, index }) => {
+const AnimeCard: React.FC<IAnimeCard> = ({
+  anime,
+  rank,
+  rankType,
+  load,
+  index,
+}) => {
   return (
     <Grow key={anime.id} in={!load} timeout={!load ? index * 50 + 400 : 300}>
       <ImageListItem key={anime.id} style={{ height: 400 }}>
         <ACard style={rankColor(rank)}>
           <CardContent>
             <Typography variant="h4" color="initial">
-              #{rank + 1} {rank - 3 < 0 ? "🏆" : ""}
+              #{rank + 1} {rank - 3 < 0 ? '🏆' : ''}
             </Typography>
             <Typography variant="h5">{anime.node.title.romaji}</Typography>
             <Typography variant="subtitle1" color="initial">
@@ -69,7 +75,7 @@ const AnimeCard: React.FC<IAnimeCard> = ({ anime, rank, rankType, load, index })
             </Typography>
             <Grid container alignItems="center" justifyContent="space-evenly">
               {rankType === SCORE_DESC ? (
-                <Grid item xs={6} style={{ textAlign: "center" }}>
+                <Grid item xs={6} style={{ textAlign: 'center' }}>
                   <Typography variant="h6" color="initial">
                     Average Score: {anime.node.averageScore}
                   </Typography>
@@ -83,24 +89,24 @@ const AnimeCard: React.FC<IAnimeCard> = ({ anime, rank, rankType, load, index })
                   <Divider />
                   <br />
                   <Typography variant="body1" color="initial">
-                    Score Rank:{" "}
+                    Score Rank:{' '}
                     {
                       anime.node.rankings.find(
-                        (r) => r.allTime === true && r.type === "RATED"
+                        (r) => r.allTime === true && r.type === 'RATED'
                       )?.rank
                     }
                   </Typography>
                   <Typography variant="body2" color="initial">
-                    Popularity Rank:{" "}
+                    Popularity Rank:{' '}
                     {
                       anime.node.rankings.find(
-                        (r) => r.allTime === true && r.type === "POPULAR"
+                        (r) => r.allTime === true && r.type === 'POPULAR'
                       )?.rank
                     }
                   </Typography>
                 </Grid>
               ) : (
-                <Grid item xs={6} style={{ textAlign: "center" }}>
+                <Grid item xs={6} style={{ textAlign: 'center' }}>
                   <Typography variant="h6" color="initial">
                     Popularity: {anime.node.popularity}
                   </Typography>
@@ -111,18 +117,18 @@ const AnimeCard: React.FC<IAnimeCard> = ({ anime, rank, rankType, load, index })
                   <Divider />
                   <br />
                   <Typography variant="body1" color="initial">
-                    Popularity Rank:{" "}
+                    Popularity Rank:{' '}
                     {
                       anime.node.rankings.find(
-                        (r) => r.allTime === true && r.type === "POPULAR"
+                        (r) => r.allTime === true && r.type === 'POPULAR'
                       )?.rank
                     }
                   </Typography>
                   <Typography variant="body2" color="initial">
-                    Score Rank:{" "}
+                    Score Rank:{' '}
                     {
                       anime.node.rankings.find(
-                        (r) => r.allTime === true && r.type === "RATED"
+                        (r) => r.allTime === true && r.type === 'RATED'
                       )?.rank
                     }
                   </Typography>
@@ -132,9 +138,9 @@ const AnimeCard: React.FC<IAnimeCard> = ({ anime, rank, rankType, load, index })
                 item
                 xs={6}
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
                 }}
               >
                 <Image
@@ -154,7 +160,7 @@ const AnimeCard: React.FC<IAnimeCard> = ({ anime, rank, rankType, load, index })
           </CardContent>
         </ACard>
       </ImageListItem>
-    </Grow> 
+    </Grow>
   );
 };
 export default AnimeCard;

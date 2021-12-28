@@ -1,6 +1,6 @@
-import { createTheme, responsiveFontSizes } from "@mui/material";
+import { createTheme, responsiveFontSizes } from '@mui/material';
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   interface BreakpointOverrides {
     custom: true;
   }
@@ -8,7 +8,7 @@ declare module "@mui/material/styles" {
 
 let theme = createTheme({
   palette: {
-    mode: "light",
+    mode: 'light',
   },
   breakpoints: {
     values: {

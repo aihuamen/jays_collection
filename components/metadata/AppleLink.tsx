@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 export const AppleLink = () => {
   return (
-    <React.Fragment>
+    <>
       <link
         rel="apple-touch-startup-image"
         href="icons/apple-splash-2048-2732.jpg"
@@ -133,6 +133,6 @@ export const AppleLink = () => {
         href="icons/apple-splash-1136-640.jpg"
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
       />
-    </React.Fragment>
+    </>
   );
 };

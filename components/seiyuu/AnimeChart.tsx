@@ -1,6 +1,6 @@
-import Chart from "react-apexcharts";
-import { RankSortType, SCORE_DESC } from "../../interfaces/seiyuu";
-import { AnimeCharEdge } from "../../interfaces/seiyuu";
+import Chart from 'react-apexcharts';
+import { RankSortType, SCORE_DESC } from '../../interfaces/seiyuu';
+import { AnimeCharEdge } from '../../interfaces/seiyuu';
 
 interface IChart {
   anime: AnimeCharEdge[];
@@ -12,24 +12,24 @@ const AnimeChart: React.FC<IChart> = ({ anime, rankType }) => {
     <Chart
       options={{
         chart: {
-          id: "anime-bar",
+          id: 'anime-bar',
         },
         xaxis: {
-          categories: anime.map((a) => a.node.title.romaji ?? ""),
+          categories: anime.map((a) => a.node.title.romaji ?? ''),
           labels: {
             trim: true,
             style: {
-              fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+              fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
             },
           },
         },
         tooltip: {
           style: {
-            fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
           },
         },
         noData: {
-          text: "Please wait...",
+          text: 'Please wait...',
         },
         dataLabels: {
           enabled: rankType === SCORE_DESC,
@@ -39,13 +39,13 @@ const AnimeChart: React.FC<IChart> = ({ anime, rankType }) => {
         rankType === SCORE_DESC
           ? [
               {
-                name: "score",
+                name: 'score',
                 data: anime.map((a) => a.node.averageScore ?? 0),
               },
             ]
           : [
               {
-                name: "popularity",
+                name: 'popularity',
                 data: anime.map((a) => a.node.popularity ?? 0),
               },
             ]

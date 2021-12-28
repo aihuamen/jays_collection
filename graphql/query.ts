@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const SEIYUU_SCORE = gql`
   query Query($staffSearch: String, $top: Int, $rankBy: [MediaSort]) {
@@ -42,7 +42,7 @@ export const SEIYUU_SCORE = gql`
             }
           }
         }
-      } 
+      }
     }
   }
-`
+`;

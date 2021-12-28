@@ -1,18 +1,19 @@
-import Link from "next/link";
-import { Box, Typography, Container, Divider, CssBaseline, Slide, Fade } from "@mui/material";
-import { styled } from '@mui/system'
-import React from "react";
-import Head from "next/head";
-import { useSpeed } from "../hooks/useSpeed";
+import Link from 'next/link';
+import {
+  Box,
+  Typography,
+  Container,
+  Divider,
+  CssBaseline,
+  Slide,
+  Fade,
+} from '@mui/material';
+import React from 'react';
+import Head from 'next/head';
+import { useSpeed } from '../hooks/useSpeed';
+import { NextPage } from 'next';
 
-const Background = styled('div')(({ theme }) => ({
-  textAlign: "center",
-  background: "-webkit-linear-gradient(270deg, #ffa601 0%, #ffffff 100%)",
-  minHeight: "100vh",
-  paddingTop: theme.spacing(3),
-}))
-
-const IndexPage = () => {
+const IndexPage: NextPage = () => {
   const speed = useSpeed();
 
   return (
@@ -34,7 +35,15 @@ const IndexPage = () => {
         mountOnEnter
         unmountOnExit
       >
-        <Background>
+        <Box
+          sx={{
+            textAlign: 'center',
+            background:
+              '-webkit-linear-gradient(270deg, #ffa601 0%, #ffffff 100%)',
+            minHeight: '100vh',
+            paddingTop: 3,
+          }}
+        >
           <CssBaseline />
           <Container>
             <Box paddingTop="5vh">
@@ -67,7 +76,7 @@ const IndexPage = () => {
                 </a>
               </Link>
               <Typography variant="h6" component="span" color="initial">
-                {" "}
+                {' '}
                 - Finding the best anime your Seiyuu has voiced
               </Typography>
             </Typography>
@@ -79,13 +88,13 @@ const IndexPage = () => {
                 </a>
               </Link>
               <Typography variant="h6" component="span" color="initial">
-                {" "}
+                {' '}
                 - Finding the best anime your Seiyuu has voiced (Server Side
                 Rendering)
               </Typography>
             </Typography>
           </Container>
-        </Background>
+        </Box>
       </Slide>
     </>
   );

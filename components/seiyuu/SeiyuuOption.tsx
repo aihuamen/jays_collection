@@ -1,12 +1,12 @@
-import React from "react";
-import { POPULARITY_DESC, SCORE_DESC } from "../../interfaces/seiyuu";
-import { useRouter } from "next/router";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
-import Grid from "@mui/material/Grid";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
+import React from 'react';
+import { POPULARITY_DESC, SCORE_DESC } from '../../interfaces/seiyuu';
+import { useRouter } from 'next/router';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import Grid from '@mui/material/Grid';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 
 interface ISeiyuuSelect {
   setLoad: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,25 +14,25 @@ interface ISeiyuuSelect {
 
 const SeiyuuSelect: React.FC<ISeiyuuSelect> = ({ setLoad }) => {
   const router = useRouter();
-  const params = new URLSearchParams(router.asPath.split("?")[1]);
+  const params = new URLSearchParams(router.asPath.split('?')[1]);
 
   const setParams = (type: string, value: string) => {
     setLoad(true);
     params.set(type, value);
-    router.push("?" + params.toString(), "?" + params.toString(), {
+    router.push('?' + params.toString(), '?' + params.toString(), {
       scroll: false,
     });
   };
 
   return (
-    <Grid container justifyContent="space-evenly" style={{ width: "100%" }}>
+    <Grid container justifyContent="space-evenly" style={{ width: '100%' }}>
       <FormControl>
         <FormLabel>Select Top</FormLabel>
         <RadioGroup
           row
-          value={router.query.t ?? "10"}
+          value={router.query.t ?? '10'}
           onChange={(e) => {
-            setParams("t", e.target.value);
+            setParams('t', e.target.value);
           }}
         >
           <FormControlLabel value="5" control={<Radio />} label="5" />
@@ -47,7 +47,7 @@ const SeiyuuSelect: React.FC<ISeiyuuSelect> = ({ setLoad }) => {
           row
           value={router.query.r ?? SCORE_DESC}
           onChange={(e) => {
-            setParams("r", e.target.value);
+            setParams('r', e.target.value);
           }}
         >
           <FormControlLabel
