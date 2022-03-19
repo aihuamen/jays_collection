@@ -14,6 +14,7 @@ import { useSpeed } from '../src/hooks';
 import { NextPage } from 'next';
 import TwitterLink from '../src/components/metadata/TwiiterLink';
 import OGLink from '../src/components/metadata/OGLink';
+import AppleLink from '../src/components/metadata/AppleLink';
 
 const IndexPage: NextPage = () => {
   const speed = useSpeed();
@@ -37,6 +38,7 @@ const IndexPage: NextPage = () => {
           title="Jay's collection"
           description='Collection of something "Q U A L I T Y"'
         />
+        <AppleLink title="Jay's collection" />
       </Head>
       <Slide
         in={true}

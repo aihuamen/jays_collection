@@ -18,6 +18,9 @@ import SeiyuuProfile from '../src/components/seiyuu/SeiyuuProfile';
 import AppBar from '../src/components/utils/AppBar';
 import SeiyuuOption from '../src/components/seiyuu/SeiyuuOption';
 import SeiyuuSearch from '../src/components/seiyuu/SeiyuuSearch';
+import OGLink from '../src/components/metadata/OGLink';
+import AppleLink from '../src/components/metadata/AppleLink';
+import TwitterLink from '../src/components/metadata/TwiiterLink';
 
 type Props = {
   data?: SeiyuuInfo;
@@ -46,6 +49,17 @@ const SeiyuuSSR: NextPage<Props> = ({ data, error }) => {
         />
         <meta name="application-name" content="Seiyuu Anime Ranking (SSR)" />
         <meta charSet="utf-8" />
+        <OGLink
+          page="/seiyuuSSR"
+          title="Seiyuu Anime Ranking (SSR)"
+          description="Finding the best anime your Seiyuu has voiced"
+        />
+        <TwitterLink
+          page="/seiyuuSSR"
+          title="Seiyuu Anime Ranking (SSR)"
+          description="Finding the best anime your Seiyuu has voiced"
+        />
+        <AppleLink title="Seiyuu Anime Ranking (SSR)" />
       </Head>
       <Box
         sx={{

@@ -7,7 +7,6 @@ import Document, {
   DocumentInitialProps,
 } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
-import { AppleLink } from '../src/components/metadata/AppleLink';
 import createEmotionCache from '../src/utils/createEmotionCache';
 
 type DocumentProps = DocumentInitialProps & { emotionStyleTags: JSX.Element[] };
@@ -17,12 +16,6 @@ export default class MyDocument extends Document<DocumentProps> {
     return (
       <Html lang="en">
         <Head>
-          <meta name="apple-mobile-web-app-capable" content="yes" />
-          <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="default"
-          />
-          <meta name="apple-mobile-web-app-title" content="Jay's Collection" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="theme-color" content="#FFFFFF" />
@@ -34,7 +27,6 @@ export default class MyDocument extends Document<DocumentProps> {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap"
           />
-          <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
           <link
             rel="icon"
             type="image/png"
@@ -60,7 +52,6 @@ export default class MyDocument extends Document<DocumentProps> {
             href="/icons/favicon-16x16.png"
           />
           <link rel="shortcut icon" href="/icons/favicon.ico" />
-          <AppleLink />
           {this.props.emotionStyleTags}
         </Head>
         <body>

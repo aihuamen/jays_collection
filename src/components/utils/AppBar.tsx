@@ -56,7 +56,7 @@ const AppBar: React.FC<IAppBar> = ({
             sx={{
               display: {
                 xs: 'none',
-                sm: 'block',
+                md: 'block',
               },
             }}
           >

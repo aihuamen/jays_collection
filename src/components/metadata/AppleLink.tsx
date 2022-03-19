@@ -1,8 +1,16 @@
 import React from 'react';
 
-export const AppleLink = () => {
+interface IAppleLink {
+  title: string;
+}
+
+const AppleLink: React.FC<IAppleLink> = ({ title }) => {
   return (
     <>
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      <meta name="apple-mobile-web-app-title" content={title} />
+      <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
       <link
         rel="apple-touch-startup-image"
         href="icons/apple-splash-2048-2732.jpg"
@@ -136,3 +144,5 @@ export const AppleLink = () => {
     </>
   );
 };
+
+export default AppleLink;

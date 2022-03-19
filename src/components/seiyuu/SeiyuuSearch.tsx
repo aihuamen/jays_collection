@@ -15,12 +15,6 @@ const SearchDiv = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -42,9 +36,9 @@ const Input = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
+      width: '30vw',
       '&:focus': {
-        width: '20ch',
+        width: '35vw',
       },
     },
   },
@@ -82,6 +76,16 @@ const SeiyuuSearch: React.FC = () => {
     <Autocomplete
       disablePortal
       freeSolo
+      sx={{
+        width: {
+          xs: '100%',
+          sm: 'auto',
+        },
+        marginLeft: {
+          xs: 0,
+          sm: 1,
+        },
+      }}
       options={data?.Page.staff ?? []}
       getOptionLabel={(o) => `${o.name.full} (${o.name.native})`}
       filterOptions={(staffs) =>

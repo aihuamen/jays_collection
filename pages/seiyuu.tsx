@@ -24,6 +24,7 @@ import { NextPage } from 'next';
 import TwitterLink from '../src/components/metadata/TwiiterLink';
 import OGLink from '../src/components/metadata/OGLink';
 import SeiyuuSearch from '../src/components/seiyuu/SeiyuuSearch';
+import AppleLink from '../src/components/metadata/AppleLink';
 
 const Seiyuu: NextPage = () => {
   const router = useRouter();
@@ -74,6 +75,7 @@ const Seiyuu: NextPage = () => {
           title="Seiyuu Anime Ranking"
           description="Finding the best anime your Seiyuu has voiced"
         />
+        <AppleLink title="Seiyuu Anime Ranking" />
       </Head>
       <Slide
         in={true}
