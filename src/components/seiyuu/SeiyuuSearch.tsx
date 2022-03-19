@@ -1,38 +1,34 @@
 import { useLazyQuery } from '@apollo/client';
 import Autocomplete from '@mui/material/Autocomplete';
 import SearchIcon from '@mui/icons-material/Search';
-import { FormEvent, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import debounce from 'lodash/debounce';
 import { SEARCH_SEIYUU_PAGE } from '../../graphql/query';
 import { SeiyuuSearchPageResult, VOICE_ACTOR } from '../../interfaces/seiyuu';
-import { alpha, InputBase, styled, useAutocomplete } from '@mui/material';
+import {
+  alpha,
+  IconButton,
+  InputAdornment,
+  InputBase,
+  styled,
+  useAutocomplete,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 
 const SearchDiv = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
+  transition: theme.transitions.create('background-color'),
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
 const Input = styled(InputBase)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    padding: theme.spacing(1, 1, 1, 2),
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -62,7 +58,11 @@ const SeiyuuSearch: React.FC = () => {
     []
   );
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (search === '') return;
     searchInput.current?.blur();
@@ -87,7 +87,9 @@ const SeiyuuSearch: React.FC = () => {
         },
       }}
       options={data?.Page.staff ?? []}
-      getOptionLabel={(o) => `${o.name.full} (${o.name.native})`}
+      getOptionLabel={(o) =>
+        typeof o === 'string' ? '' : `${o.name.full} (${o.name.native})`
+      }
       filterOptions={(staffs) =>
         staffs.filter((s) =>
           s.primaryOccupations.some((o) => o === VOICE_ACTOR)
@@ -99,18 +101,22 @@ const SeiyuuSearch: React.FC = () => {
       loading={loading}
       renderInput={(p) => (
         <SearchDiv ref={p.InputProps.ref}>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
           <form onSubmit={handleSubmit}>
             <Input
               placeholder="Search…"
               inputProps={p.inputProps}
-              value={search}
               inputRef={searchInput}
               onChange={(e) => {
+                setSearch(e.target.value);
                 fetch(e.target.value);
               }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={handleSubmit}>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
             />
           </form>
         </SearchDiv>
