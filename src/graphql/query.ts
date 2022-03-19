@@ -12,6 +12,7 @@ export const SEIYUU_SCORE = gql`
         large
       }
       age
+      primaryOccupations
       characterMedia(sort: $rankBy, perPage: $top) {
         edges {
           id
@@ -42,6 +43,21 @@ export const SEIYUU_SCORE = gql`
             }
           }
         }
+      }
+    }
+  }
+`;
+
+export const SEARCH_SEIYUU_PAGE = gql`
+  query SeiyuuPage($staffSearch: String, $perPage: Int) {
+    Page(perPage: $perPage) {
+      staff(search: $staffSearch) {
+        id
+        name {
+          full
+          native
+        }
+        primaryOccupations
       }
     }
   }

@@ -23,6 +23,7 @@ import SeiyuuSelect from '../src/components/seiyuu/SeiyuuOption';
 import { NextPage } from 'next';
 import TwitterLink from '../src/components/metadata/TwiiterLink';
 import OGLink from '../src/components/metadata/OGLink';
+import SeiyuuSearch from '../src/components/seiyuu/SeiyuuSearch';
 
 const Seiyuu: NextPage = () => {
   const router = useRouter();
@@ -87,11 +88,9 @@ const Seiyuu: NextPage = () => {
             minHeight: '100vh',
           }}
         >
-          <AppBar
-            title="Seiyuu Anime Ranking"
-            includeSearch
-            setLoad={setLoad}
-          />
+          <AppBar title="Seiyuu Anime Ranking" includeSearch>
+            <SeiyuuSearch />
+          </AppBar>
           <Toolbar />
           {error ? (
             <Typography variant="h2">{error.message}</Typography>

@@ -17,10 +17,11 @@ import Skeleton from '@mui/material/Skeleton';
 import SeiyuuProfile from '../src/components/seiyuu/SeiyuuProfile';
 import AppBar from '../src/components/utils/AppBar';
 import SeiyuuOption from '../src/components/seiyuu/SeiyuuOption';
+import SeiyuuSearch from '../src/components/seiyuu/SeiyuuSearch';
 
 type Props = {
   data?: SeiyuuInfo;
-  loading: boolean;
+  // loading: boolean;
   error?: string;
 };
 
@@ -52,11 +53,9 @@ const SeiyuuSSR: NextPage<Props> = ({ data, error }) => {
           minHeight: '100vh',
         }}
       >
-        <AppBar
-          title="Seiyuu Anime Ranking (SSR)"
-          includeSearch
-          setLoad={setLoad}
-        />
+        <AppBar title="Seiyuu Anime Ranking (SSR)" includeSearch>
+          <SeiyuuSearch />
+        </AppBar>
         <Toolbar />
         <Container style={{ paddingTop: 24 }}>
           <Grid container direction="column" alignItems="center">
@@ -98,7 +97,9 @@ const SeiyuuSSR: NextPage<Props> = ({ data, error }) => {
 
 export default SeiyuuSSR;
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  query,
+}) => {
   const apl = initApollo();
   try {
     const { data } = await apl.query<{ Staff: SeiyuuInfo }>({

@@ -19,7 +19,7 @@ const SeiyuuSelect: React.FC<ISeiyuuSelect> = ({ setLoad }) => {
   const setParams = (type: string, value: string) => {
     setLoad(true);
     params.set(type, value);
-    router.push('?' + params.toString(), '?' + params.toString(), {
+    router.push(`?${params.toString()}`, `?${params.toString()}`, {
       scroll: false,
     });
   };
@@ -31,9 +31,7 @@ const SeiyuuSelect: React.FC<ISeiyuuSelect> = ({ setLoad }) => {
         <RadioGroup
           row
           value={router.query.t ?? '10'}
-          onChange={(e) => {
-            setParams('t', e.target.value);
-          }}
+          onChange={(e) => setParams('t', e.target.value)}
         >
           <FormControlLabel value="5" control={<Radio />} label="5" />
           <FormControlLabel value="10" control={<Radio />} label="10" />
@@ -46,9 +44,7 @@ const SeiyuuSelect: React.FC<ISeiyuuSelect> = ({ setLoad }) => {
         <RadioGroup
           row
           value={router.query.r ?? SCORE_DESC}
-          onChange={(e) => {
-            setParams('r', e.target.value);
-          }}
+          onChange={(e) => setParams('r', e.target.value)}
         >
           <FormControlLabel
             value={SCORE_DESC}

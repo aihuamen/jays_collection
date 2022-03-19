@@ -32,7 +32,7 @@ interface IAnimeCard {
 }
 
 const rankColor = (rank: number) => {
-  let style: { backgroundColor?: string } = {};
+  const style: { backgroundColor?: string } = {};
 
   switch (rank) {
     case 0:
