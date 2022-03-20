@@ -96,8 +96,20 @@ const SeiyuuSearch: React.FC = () => {
           s.primaryOccupations.some((o) => o === VOICE_ACTOR)
         )
       }
-      onChange={(_, v) =>
-        setSearch(typeof v === 'string' ? v : v?.name.full ?? '')
+      onChange={
+        (_, v) => {
+          if (!v) {
+            setSearch('');
+            return;
+          }
+          if (typeof v === 'string') {
+            setSearch(v);
+            return;
+          }
+          const [firstname, lastname] = v.name.full.split(' ');
+          setSearch(`${lastname} ${firstname}`);
+        }
+        // setSearch(typeof v === 'string' ? v : v?.name.full ?? '')
       }
       loading={loading}
       renderInput={(p) => (
